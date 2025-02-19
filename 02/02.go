@@ -36,7 +36,11 @@ func PartOne(lines []string) int64 {
 	var tally int64 = 0
 
 	for _, line := range lines {
-		min, max, ch, pwd := processLine(line)
+		min, max, ch, pwd, err := processLine(line)
+		if err != nil {
+			println(err)
+			return 0
+		}
 
 		charCount := strings.Count(pwd, ch)
 		if charCount >= min && charCount <= max {
@@ -51,7 +55,11 @@ func PartTwo(lines []string) int64 {
 	var tally int64 = 0
 
 	for _, line := range lines {
-		min, max, ch, pwd := processLine(line)
+		min, max, ch, pwd, err := processLine(line)
+		if err != nil {
+			println(err)
+			return 0
+		}
 
 		if (pwd[min-1] == ch[0] && pwd[max-1] == ch[0]) || (pwd[min-1] != ch[0] && pwd[max-1] != ch[0]) {
 			continue
@@ -63,24 +71,22 @@ func PartTwo(lines []string) int64 {
 	return tally
 }
 
-func processLine(line string) (int, int, string, string) {
+func processLine(line string) (int, int, string, string, error) {
 	splits := strings.Split(line, " ")
 	bounds := strings.Split(splits[0], "-")
 
-	min, err1 := strconv.Atoi(bounds[0])
-	if err1 != nil {
-		println(err1)
-		return 0, 0, "", ""
+	min, err := strconv.Atoi(bounds[0])
+	if err != nil {
+		return 0, 0, "", "", err
 	}
 
-	max, err2 := strconv.Atoi(bounds[1])
-	if err2 != nil {
-		println(err2)
-		return 0, 0, "", ""
+	max, err := strconv.Atoi(bounds[1])
+	if err != nil {
+		return 0, 0, "", "", err
 	}
 
 	ch := splits[1][:len(splits[1])-1]
 	pwd := splits[2]
 
-	return min, max, ch, pwd
+	return min, max, ch, pwd, nil
 }
