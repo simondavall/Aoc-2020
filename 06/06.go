@@ -53,11 +53,15 @@ func PartOne(blocks []string) int64 {
 	return int64(tally)
 }
 
+var seen = make(map[rune]int)
+
 func PartTwo(blocks []string) int64 {
 	var tally int = 0
 
 	for _, block := range blocks {
-		seen := make(map[rune]int)
+		for key := range seen {
+			delete(seen, key)
+		}
 		people := 0
 		lines := strings.Split(block, "\n")
 		for _, line := range lines {
