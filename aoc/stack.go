@@ -8,6 +8,10 @@ func (s *Stack[T]) IsEmpty() bool {
 	return len(*s) == 0
 }
 
+func (s *Stack[T]) Count() int {
+	return len(*s)
+}
+
 func (s *Stack[T]) Push(data T) {
 	*s = append((*s), data)
 }
